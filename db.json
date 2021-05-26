@@ -6,6 +6,14 @@
       "id": 2,
       "email": "lorem@gmail.com",
       "password": "bioup"
+    },
+    {
+      "firstName": "Luc",
+      "lastName": "Le Gallsss",
+      "email": "dskdksd@gmail.com",
+      "password": "",
+      "password2": "guigui",
+      "id": 3
     }
   ],
   "posts": [
@@ -128,6 +136,20 @@
       "firstName": "Fred",
       "lastName": "Flintstone",
       "id": 33
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "accountId": 2,
+      "postId": 2,
+      "description": "blabla coucou"
+    },
+    {
+      "id": 2,
+      "accountId": 1,
+      "postId": 3,
+      "description": "blabla coucou"
     }
   ]
 }

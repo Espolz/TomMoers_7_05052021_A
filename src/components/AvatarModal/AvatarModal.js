@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AvatarModal({ authValues, setAuthValues }) {
+export default function AvatarModal({ userConnected, authValues, setAuthValues }) {
   const classes = useStyles();
   const history = useHistory()
 
@@ -51,80 +51,89 @@ export default function AvatarModal({ authValues, setAuthValues }) {
   const [userPassword2, setUserPassword2] = useState('')
   const [userImage, setUserImage] = useState('')
 
-  let id= 3
+  let id = 3
 
 
-     const fetchSingleUser = (id) => getUser(id) //res is what we get
-        .then(data =>{
+  const fetchSingleUser = (id) => getUser(id) //res is what we get
+    .then(data => {
 
-        
-          setUserFirstName(data.firstName)
-          setUserLastName(data.lastName)
-          setUserEmail(data.email)
-          setUserImage(data.image)
-          }) // we then receive the data, that we store in the useState (require one function and one import)
 
-    useEffect(() => {
-      fetchSingleUser(id);
-    }, []);
+      setUserFirstName(data.firstName)
+      setUserLastName(data.lastName)
+      setUserEmail(data.email)
+      setUserImage(data.image)
+    }) // we then receive the data, that we store in the useState (require one function and one import)
 
-    console.log(userFirstName)
-    console.log(userLastName)
-    console.log(userEmail)
-    console.log(userImage)
-    
-    // API
-    // PUT user by id ______________________________________________________________
+  useEffect(() => {
+    fetchSingleUser(id);
+  }, []);
+
+  console.log(userFirstName)
+  console.log(userLastName)
+  console.log(userEmail)
+  console.log(userImage)
+
+  // API
+  // PUT user by id ______________________________________________________________
+
+  //GET account (useEffect) 
+
+  const saveInformation = () => {
+    const body = {};
+    if (userConnected.firstName !== userFirstName) {
+      body.firstName = userFirstName;
+    }
 
     const requestOptions = {
-      method: 'PUT',
+      method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userFirstName, userLastName, userEmail, userPassword, userPassword2, userImage
-       })
+      body: JSON.stringify(body)
     };
-    const putUserById = () => fetch('http://localhost:5000/Accounts/' + id, requestOptions)
+    const putUserById = () => fetch('http://localhost:5000/accounts/' + id, requestOptions)
       .then(response => response.json())
-      // .then(data => setUserFirstName(data.firstName));
+    // .then(data => setUserFirstName(data.firstName));
+    putUserById();
+  }
 
-    useEffect(() => {
-      // putUserById(id);
-      
-    },[]);
-      
-    const deleteUserById = () => 
-      fetch('http://localhost:5000/Accounts/' + id, { method: 'DELETE' })
-        .then(() => console.log('Delete successful'))
-        // .then(() => {
-        //   setUserFirstName(''),
-        //   setUserLastName(''),
-        //   setUserEmail(''),
-        //   setUserImage(''),
-        //   setUserPassword(''),
-        //   setUserPassword2('')
-        // })
-        .then(() => 
-          setUserFirstName(''),
-          setUserLastName(''),
-          setUserEmail(''),
-          setUserImage(''),
-          setUserPassword(''),
-          setUserPassword2('')
-        ).then(() => handleClose()
-        ).then(() => history.push('/'))
-        
-    // deleteUserById(id)
+  useEffect(() => {
+    // putUserById(id);
+
+  }, []);
+
+  const deleteUserById = () =>
+    fetch('http://localhost:5000/Accounts/' + id, { method: 'DELETE' })
+      .then(() => console.log('Delete successful'))
+      // .then(() => {
+      //   setUserFirstName(''),
+      //   setUserLastName(''),
+      //   setUserEmail(''),
+      //   setUserImage(''),
+      //   setUserPassword(''),
+      //   setUserPassword2('')
+      // })
+      .then(() =>
+        setUserFirstName(''),
+        setUserLastName(''),
+        setUserEmail(''),
+        setUserImage(''),
+        setUserPassword(''),
+        setUserPassword2('')
+      ).then(() => handleClose()
+      ).then(() => history.push('/'))
+
+  // deleteUserById(id)
 
 
 
-    // const getSinglePost = (id) => getPost(id) //res is what we get
-    // .then(data => setPost(data))
-  
-    // useEffect(() => {
-    //   getSinglePost(id)
-    // },[]);
+  // const getSinglePost = (id) => getPost(id) //res is what we get
+  // .then(data => setPost(data))
 
   // useEffect(() => {
-    
+  //   getSinglePost(id)
+  // },[]);
+
+  // useEffect(() => {
+
   //   axios.get('http://localhost:5000/accounts/' + id)
   //   .then(function (response) {
   //     // handle success
@@ -166,79 +175,79 @@ export default function AvatarModal({ authValues, setAuthValues }) {
         <Fade in={open}>
           <div className={classes.paper + ' ' + 'avatar-modal'}>
             <h2 id="simple-modal-title">Account information</h2>
-            <hr className="avatar-modal--hr"/>
+            <hr className="avatar-modal--hr" />
             <form action="" className="avatar-modal__form">
-                <TextField
-                    label="first-name" variant="outlined" 
-                    id='first-name' margin='dense'  
-                    type="text" 
-                    name="firstName" 
-                    className="avatar-modal__form--input" 
-                    placeholder="Enter your new first name"
-                    value={userFirstName}
-                    onChange={(e) => setUserFirstName(e.target.value)}
-                    size="small" 
-                  />
-                      
-                
-                  <TextField
-                    className="avatar-modal__form--input" 
-                    label="last-name" variant="outlined" 
-                    size="small" margin='dense'  
-                    id='last-name' 
-                    type="text" 
-                    name="lastName" 
-                    className="form__inputs--input" 
-                    placeholder="Enter your new last name"
-                    value={userLastName}
-                    onChange={(e) => setUserLastName(e.target.value)}
-                  />
-                      
+              <TextField
+                label="first-name" variant="outlined"
+                id='first-name' margin='dense'
+                type="text"
+                name="firstName"
+                className="avatar-modal__form--input"
+                placeholder="Enter your new first name"
+                value={userFirstName}
+                onChange={(e) => setUserFirstName(e.target.value)}
+                size="small"
+              />
 
-                  <TextField
-                    className="avatar-modal__form--input" 
-                    label="Email" variant="outlined" 
-                    size="small" margin='dense'  
-                    id='email' 
-                    type="email" 
-                    name="email" 
-                    className="form__inputs--input" 
-                    placeholder="Enter your new email"
-                    value={userEmail}
-                    onChange={(e) => setUserEmail(e.target.value)}
-                  />
-                      
-                  <InputPassword 
-                    className="avatar-modal__form--input" 
-                    htmlFor='password2'
-                    id='password'
-                    name='password'
-                    text='Password'
-                    
-                    authValues={userPassword} 
-                    handleAuthChange={(e) => setUserPassword(e.target.value)}
-                    labelWidth={80}   
-                  />
 
-                  <InputPassword 
-                    className="avatar-modal__form--input" 
-                    htmlFor='password2'
-                    id='password2'
-                    name='password2'
-                    text='Confirm password'
-                    authValues={userPassword2} 
-                    handleAuthChange={(e) => setUserPassword2(e.target.value)}
-                    labelWidth={140}   
-                  />
-                  
-                  <div className="avatar-modal__form--btn">
-                    <ButtonLarge variant='outlined' color='error' text='Delete account' onClick={deleteUserById}/>
-                    <ButtonLarge color='primary' text='Save information'/>
-                  </div>
-                  
+              <TextField
+                className="avatar-modal__form--input"
+                label="last-name" variant="outlined"
+                size="small" margin='dense'
+                id='last-name'
+                type="text"
+                name="lastName"
+                className="form__inputs--input"
+                placeholder="Enter your new last name"
+                value={userLastName}
+                onChange={(e) => setUserLastName(e.target.value)}
+              />
+
+
+              <TextField
+                className="avatar-modal__form--input"
+                label="Email" variant="outlined"
+                size="small" margin='dense'
+                id='email'
+                type="email"
+                name="email"
+                className="form__inputs--input"
+                placeholder="Enter your new email"
+                value={userEmail}
+                onChange={(e) => setUserEmail(e.target.value)}
+              />
+
+              <InputPassword
+                className="avatar-modal__form--input"
+                htmlFor='password2'
+                id='password'
+                name='password'
+                text='Password'
+
+                authValues={userPassword}
+                handleAuthChange={(e) => setUserPassword(e.target.value)}
+                labelWidth={80}
+              />
+
+              <InputPassword
+                className="avatar-modal__form--input"
+                htmlFor='password2'
+                id='password2'
+                name='password2'
+                text='Confirm password'
+                authValues={userPassword2}
+                handleAuthChange={(e) => setUserPassword2(e.target.value)}
+                labelWidth={140}
+              />
+
+              <div className="avatar-modal__form--btn">
+                <ButtonLarge variant='outlined' color='error' text='Delete account' onClick={deleteUserById} />
+                <ButtonLarge color='primary' text='Save information' onClick={saveInformation} />
+              </div>
+
             </form>
-        </div>
-          
+          </div>
+
         </Fade>
       </Modal>
     </div>

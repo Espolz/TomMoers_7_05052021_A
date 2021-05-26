@@ -5,15 +5,15 @@ import { getUsers } from '../api/users'
 import Header from '../components/Header/Header'
 import PostCard from '../components/Forum/PostCard'
 import moment from 'moment';
-import Comment from '../components/comment/Comment'
+import Comment from '../components/Comment/Comment'
 
 
 
 export const Forum = ({ authValues, setAuthValues }) => {
-    const randomTo10 = Math.floor(Math.random()*5)
+    const randomTo10 = Math.floor(Math.random() * 5)
     const time = moment().format('MMMM Do YYYY, h:mm:ss a')
     // const time = 'time'
-    
+
     // console.log(time)
 
     const [description, setDescription] = useState('')
@@ -24,14 +24,14 @@ export const Forum = ({ authValues, setAuthValues }) => {
     // const [like, setLike] = useState(0)
     const [comment, setComment] = useState(0)
 
-    
+
 
 
     const [posts, setPosts] = useState('')
 
     const [users, setUsers] = useState('')
 
-    
+
     // API 
     // GET posts ______________________________________________________
     const refreshPosts = () => getPosts() //res is what we get
@@ -58,7 +58,7 @@ export const Forum = ({ authValues, setAuthValues }) => {
 
 
 
-    
+
 
 
 
@@ -81,7 +81,7 @@ export const Forum = ({ authValues, setAuthValues }) => {
     // API 
     // users ______________________________________________________
     const refreshUsers = () => getUsers() //res is what we get
-    .then(data => setUsers(data)) // we then receive the data, that we store in the useState (require one function and one import)
+        .then(data => setUsers(data)) // we then receive the data, that we store in the useState (require one function and one import)
 
     useEffect(() => {
         refreshUsers();
@@ -129,26 +129,26 @@ export const Forum = ({ authValues, setAuthValues }) => {
             />
 
 
-            
+
             <div>
                 {(posts && posts.length > 0) && posts.map(post => (
                     <div key={post.id}>
-                        <PostCard 
-                            post={post} 
-                            handleDeletePost={handleDeletePost} 
+                        <PostCard
+                            post={post}
+                            handleDeletePost={handleDeletePost}
                             image={image} setImage={setImage}
                             date={date}
                             users={users}
-                            // date={date} setDate={setDate}
-                            // userId={userId}
-                            // like={like}
-                            // comment={comment}
-                    /></div>
+                        // date={date} setDate={setDate}
+                        // userId={userId}
+                        // like={like}
+                        // comment={comment}
+                        /></div>
                 ))}
 
 
             </div>
-            
+
         </Container>
     )
 }
